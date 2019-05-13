@@ -1,6 +1,6 @@
 *{
   box-sizing: border-box;
-  padding: 0;
+
   margin: 0;
 }
 
@@ -13,8 +13,31 @@ h1{
   margin-bottom: 10px;
 }
 
+
+
 .container{
 
   width: 90%;
   margin: auto;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.prenotazione{
+
+  width: 250px;
+  height: 280px;
+  border: 2px solid #ccc;
+  margin: 20px;
+}
+
+.prenotazione .identity{
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: aquamarine;
+  margin-bottom: 10px;
 }

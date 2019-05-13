@@ -138,7 +138,6 @@
 
         }
 
-
       } else {
         echo "0 results";
       }
@@ -451,7 +450,7 @@
 
       return [
 
-        "room number" => $this->id,
+        "room_number" => $this->id,
         "floor" => $this->floor,
         "beds"  => $this->beds
       ];
@@ -654,44 +653,44 @@
 
   $i = 1;
 
-  // foreach ($prenotazioni as $pren) {
-  //
-  //   $stanza = $pren->getInfoStanza($conn);
-  //   $config = $pren->getInfoConfigurazione($conn);
-  //   $pagamento = $pren->getInfoPagamento($conn);
-  //
-  //
-  //   echo "<b>Prenotazione: $i  </b><br>".
-  //   " - Date: " . $pren->getCreatedAt() . "<br>" .
-  //   " - Stanza: " . $stanza->getId() . "; " .
-  //   "Number: " . $stanza->getRoomNumber() . "; " .
-  //   "Floor: " . $stanza->getFloor() . "; " .
-  //   "Beds: " . $stanza->getBeds() . "<br>" .
-  //
-  //   " - Configurazione: " . $config->getId() . "; " .
-  //   "Number: " . $config->getId() . "; " .
-  //    $config->getTitle() . ": ' " .
-  //    $config->getDescription() . "'<br>" .
-  //
-  //    " - Pagamento: " . $pagamento->getId() . "; " .
-  //    "Status: " . $pagamento->getStatus() . "; " .
-  //    "Price: " . $pagamento->getPrice() . "<br>" .
-  //    " - Ospiti: <br>" ;
-  //
-  //    $ospiti = $pren->getOspitiByPrenotazione($conn);
-  //
-  //
-  //   foreach ($ospiti as $osp) {
-  //
-  //     echo "&nbsp&nbsp&nbsp" . $osp->getName() . " " . $osp->getLastname() . "<br>";
-  //   }
-  //
-  //   echo "<br>";
-  //
-  //   $i++;
-  //
-  // }
-
+ //  foreach ($prenotazioni as $pren) {
+ //
+ //    $stanza = $pren->getInfoStanza($conn);
+ //    $config = $pren->getInfoConfigurazione($conn);
+ //    $pagamento = $pren->getInfoPagamento($conn);
+ //
+ //
+ //    echo "<b>Prenotazione: $i  </b><br>".
+ //    " - Date: " . $pren->getCreatedAt() . "<br>" .
+ //    " - Stanza: " . $stanza->getId() . "; " .
+ //    "Number: " . $stanza->getRoomNumber() . "; " .
+ //    "Floor: " . $stanza->getFloor() . "; " .
+ //    "Beds: " . $stanza->getBeds() . "<br>" .
+ //
+ //    " - Configurazione: " . $config->getId() . "; " .
+ //    "Number: " . $config->getId() . "; " .
+ //     $config->getTitle() . ": ' " .
+ //     $config->getDescription() . "'<br>" .
+ //
+ //     " - Pagamento: " . $pagamento->getId() . "; " .
+ //     "Status: " . $pagamento->getStatus() . "; " .
+ //     "Price: " . $pagamento->getPrice() . "<br>" .
+ //     " - Ospiti: <br>" ;
+ //
+ //     $ospiti = $pren->getOspitiByPrenotazione($conn);
+ //
+ //
+ //    foreach ($ospiti as $osp) {
+ //
+ //      echo "&nbsp&nbsp&nbsp" . $osp->getName() . " " . $osp->getLastname() . "<br>";
+ //    }
+ //
+ //    echo "<br>";
+ //
+ //    $i++;
+ //
+ //  }
+ //
  // echo "<br><hr><br>";
 
   $jsReady=[];
@@ -701,7 +700,6 @@
     $stanza = $pren->getInfoStanza($conn);
     $config = $pren->getInfoConfigurazione($conn);
     $pagamento = $pren->getInfoPagamento($conn);
-
     $ospiti = $pren->getOspitiByPrenotazione($conn);
 
     $ospit = [];
@@ -718,9 +716,6 @@
                               $pagamento->getJsonData(),
                               $ospit
     );
-
-
-
 
   }
 

@@ -17,8 +17,36 @@
     <!-- Js: Handlebar-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js" charset="utf-8"></script>
 
-      <script id="-template" type="text/x-handlebars-template">
+      <script id="prenotazione-template" type="text/x-handlebars-template">
 
+
+        <div class="prenotazione">
+
+          <div class="identity">
+            <span>{{id}}</span> <span>{{date}}</span>
+          </div>
+          <ul>
+            <li>Stanza numero: {{room_number}}
+              <ul>
+                <li>piano: {{floor}}</li>
+                <li>letti : {{beds}} </li>
+                <li>configurazione :{{conf_title}}</li>
+              </ul>
+            </li>
+            <li>Pagameto:
+              <ul>
+                <li>prezzo : ${{pay_price}} </li>
+                <li>Status : {{pay_status}} </li>
+              </ul>
+            </li>
+            <li>Ospiti:
+              <ul class="ospiti">
+
+              </ul>
+            </li>
+          </ul>
+
+        </div>
 
       </script>
 
@@ -34,16 +62,6 @@
     <h1>Prenotazioni Maggio 2018</h1>
     <div class="container">
 
-      <div class="prenotazione">
-
-        <div class="">
-          <span>14</span> <span>2018-02-25</span>
-        </div>
-        <ul>
-          <li></li>
-        </ul>
-
-      </div>
 
 
     </div>
