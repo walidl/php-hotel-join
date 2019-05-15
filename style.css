@@ -4,6 +4,11 @@
   margin: 0;
 }
 
+body{
+
+  background-color: #666
+}
+
 h1{
 
   background-color: black;
@@ -27,9 +32,38 @@ h1{
 .prenotazione{
 
   width: 250px;
-  height: 280px;
-  border: 2px solid #ccc;
+  height: 320px;
+  border: 2px solid darkgray;
   margin: 20px;
+  background-color: papayawhip;
+}
+
+.prenotazione h2{
+
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color:white;
+  background-color: steelblue
+}
+
+.prenotazione h2 .fas{
+
+  font-size: 14px;
+}
+
+.prenotazione ul {
+
+  list-style: none;
+  padding: 5px;
+}
+
+
+.prenotazione ul > li .tit {
+
+  display: inline-block;
+  width: 30%;
+  font-weight: bold;
 }
 
 .prenotazione .identity{
@@ -39,5 +73,5 @@ h1{
   align-items: center;
   padding: 10px;
   background-color: aquamarine;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }

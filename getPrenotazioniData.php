@@ -107,139 +107,28 @@
       return $prenotazioni;
     }
 
-    public function getOspitiByPrenotazione($conn){
+    public function getOspiti($conn){
 
-      $sql = "
-                SELECT ospiti.name,ospiti.lastname,ospiti.date_of_birth,ospiti.document_type,ospiti.document_number
-                FROM prenotazioni
-                JOIN prenotazioni_has_ospiti
-                on prenotazioni.id  = prenotazioni_has_ospiti.prenotazione_id
-                JOIN ospiti
-                ON prenotazioni_has_ospiti.ospite_id = ospiti.id
-                WHERE prenotazioni.id = $this->id
-      ";
 
-      $result = $conn->query($sql);
-
-      $ospiti=[];
-
-      if ($result->num_rows > 0) {
-
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-          // var_dump($row); echo "<br>" ;
-          $ospiti[] = new Ospite(
-                                  $row["name"],
-                                  $row["lastname"],
-                                  $row["date_of_birth"],
-                                  $row["document_type"],
-                                  $row["document_number"]
-          );
-
-        }
-
-      } else {
-        echo "0 results";
-      }
-      return $ospiti;
+      return Ospite::getOspitiByPrenotazione($conn,$this->id);
 
 
     }
 
     public function getInfoStanza($conn){
 
-      $sql = "
-                SELECT *
-                FROM stanze
-                WHERE id = $this->stanzaId
-      ";
-
-      $result = $conn->query($sql);
-
-      $stanza;
-
-      if ($result->num_rows > 0) {
-
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-          // var_dump($row); echo "<br>" ;
-          $stanza = new Stanza(
-                                  $row["id"],
-                                  $row["room_number"],
-                                  $row["floor"],
-                                  $row["beds"]
-          );
-
-        }
-
-      } else {
-        echo "0 results";
-      }
-      return $stanza;
+      return Stanza::getStanzaById($conn,$this->stanzaId);
     }
 
     public function getInfoConfigurazione($conn){
 
-      $sql = "
-                SELECT *
-                FROM configurazioni
-                WHERE id = $this->configurazioneId
-      ";
-
-      $result = $conn->query($sql);
-
-      $conf;
-
-      if ($result->num_rows > 0) {
-
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-          // var_dump($row); echo "<br>" ;
-          $conf = new Configurazione(
-                                  $row["id"],
-                                  $row["title"],
-                                  $row["description"]
-          );
-
-        }
-
-      } else {
-        echo "0 results";
-      }
-      return $conf;
+      return Configurazione::getConfigurazioneById($conn,$this->configurazioneId);
     }
 
     public function getInfoPagamento($conn){
 
-      $sql = "
-                SELECT *
-                FROM pagamenti
-                WHERE prenotazione_id = $this->id
-      ";
 
-      $result = $conn->query($sql);
-
-      $pagamento;
-
-      if ($result->num_rows > 0) {
-
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-          // var_dump($row); echo "<br>" ;
-          $pagamento = new Pagamento(
-                                  $row["id"],
-                                  $row["status"],
-                                  $row["price"],
-                                  $row["prenotazione_id"],
-                                  $row["pagante_id"]
-          );
-
-        }
-
-      } else {
-        echo "0 results";
-      }
-      return $pagamento;
+      return Pagamento::getPagamentoById($conn,$this->id);
     }
 
     public function getJsonData(){
@@ -250,38 +139,6 @@
         "date"=> $this->createdAt
       ];
     }
-    // public function getRoomInfo($conn){
-    //
-    //   $sql = "
-    //           SELECT prenotazioni.id,stanze.room_number,stanze.floor,configurazioni.title
-    //           FROM `prenotazioni`
-    //           JOIN stanze
-    //           ON stanze.id = prenotazioni.stanza_id
-    //           JOIN configurazioni
-    //           ON configurazioni.id = prenotazioni.configurazione_id
-    //           WHERE prenotazioni.id = $this->id
-    //   ";
-    //
-    //   $result = $conn->query($sql);
-    //
-    //
-    //   $info;
-    //   if ($result->num_rows > 0) {
-    //
-    //     // output data of each row
-    //     while($row = $result->fetch_assoc()) {
-    //
-    //       $info =$row;
-    //
-    //     }
-    //
-    //
-    //   } else {
-    //     echo "0 results";
-    //   }
-    //   return $info;
-    // }
-
 
   }
 
@@ -318,23 +175,37 @@
 
       return $this->lastname;
     }
+
+
   }
 
   class Ospite extends Persona {
 
-
+    private $id;
     private $dateOfBirth;
     private $documentType;
     private $documentNumber;
 
-    public function __construct($name,$lastname,$dateOfBirth,$documentType, $documentNumber){
+    public function __construct($id,$name,$lastname,$dateOfBirth,$documentType, $documentNumber){
 
       parent::__construct($name,$lastname);
 
+      $this->setId($id);
       $this->setDateOfBirth($dateOfBirth);
       $this->setDocumentType($documentType);
       $this->setDocumentNumber($documentNumber);
 
+    }
+
+    public function setId($id){
+
+      $this->id = $id;
+
+    }
+
+    public function getId(){
+
+      return $this->id;
     }
 
     public function setDateOfBirth($dateOfBirth){
@@ -368,6 +239,44 @@
     public function getDocumentNumber(){
 
       return $this->documentNumber;
+    }
+
+    public static function getOspitiByPrenotazione($conn,$id){
+
+      $sql = "
+              SELECT ospiti.id, ospiti.name,ospiti.lastname,ospiti.date_of_birth,ospiti.document_type,ospiti.document_number
+              FROM ospiti
+              JOIN prenotazioni_has_ospiti
+              ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+              WHERE prenotazioni_has_ospiti.prenotazione_id = $id
+      ";
+
+      $result = $conn->query($sql);
+
+      $ospiti=[];
+
+      if ($result->num_rows > 0) {
+
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+          // var_dump($row); echo "<br>" ;
+          $ospiti[] = new Ospite(
+                                  $row["id"],
+                                  $row["name"],
+                                  $row["lastname"],
+                                  $row["date_of_birth"],
+                                  $row["document_type"],
+                                  $row["document_number"]
+          );
+
+        }
+
+      } else {
+        echo "0 results";
+      }
+      return $ospiti;
+
+
     }
 
     public function getJsonData(){
@@ -446,6 +355,38 @@
       return $this->beds;
     }
 
+    function getStanzaById($conn,$id){
+
+      $sql = "
+                SELECT *
+                FROM stanze
+                WHERE id = $id
+      ";
+
+      $result = $conn->query($sql);
+
+      $stanza;
+
+      if ($result->num_rows > 0) {
+
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+          // var_dump($row); echo "<br>" ;
+          $stanza = new Stanza(
+                                  $row["id"],
+                                  $row["room_number"],
+                                  $row["floor"],
+                                  $row["beds"]
+          );
+
+        }
+
+      } else {
+        echo "0 results";
+      }
+      return $stanza;
+    }
+
     public function getJsonData(){
 
       return [
@@ -508,6 +449,37 @@
     function getDescription(){
 
       return $this->description;
+    }
+
+    public static function getConfigurazioneById($conn,$id){
+
+      $sql = "
+                SELECT *
+                FROM configurazioni
+                WHERE id = $id
+      ";
+
+      $result = $conn->query($sql);
+
+      $conf;
+
+      if ($result->num_rows > 0) {
+
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+          // var_dump($row); echo "<br>" ;
+          $conf = new Configurazione(
+                                  $row["id"],
+                                  $row["title"],
+                                  $row["description"]
+          );
+
+        }
+
+      } else {
+        echo "0 results";
+      }
+      return $conf;
     }
 
     public function getJsonData(){
@@ -599,6 +571,39 @@
       return $this->paganteId;
     }
 
+    public static function getPagamentoById($conn,$id){
+
+      $sql = "
+                SELECT *
+                FROM pagamenti
+                WHERE prenotazione_id = $id
+      ";
+
+      $result = $conn->query($sql);
+
+      $pagamento;
+
+      if ($result->num_rows > 0) {
+
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+          // var_dump($row); echo "<br>" ;
+          $pagamento = new Pagamento(
+                                  $row["id"],
+                                  $row["status"],
+                                  $row["price"],
+                                  $row["prenotazione_id"],
+                                  $row["pagante_id"]
+          );
+
+        }
+
+      } else {
+        echo "0 results";
+      }
+      return $pagamento;
+    }
+
     public function getJsonData(){
 
       return [
@@ -626,72 +631,52 @@
 
   $prenotazioni = Prenotazione::getPrenotazioniByMonth($conn,5);
 
-
-  // foreach ($prenotazioni as $pren) {
-  //
-  //   echo " <b>";
-  //   var_dump($pren); echo "<br>";
-  //   echo " </b>";
-  //
-  //   var_dump($pren->getInfoStanza($conn));echo "<br>";
-  //   var_dump($pren->getInfoConfigurazione($conn));echo "<br>";
-  //   var_dump($pren->getInfoPagamento($conn));echo "<br>";
-  //
-  //
-  //   $ospiti = $pren->getOspitiByPrenotazione($conn);
-  //
-  //   foreach ($ospiti as $osp) {
-  //
-  //     var_dump($osp);
-  //   }
-  //
-  //   echo "<br><br>";
-  //
-  // }
-
   //Stampa su pagina delle info richieste------------
 
+/*
   $i = 1;
 
- //  foreach ($prenotazioni as $pren) {
- //
- //    $stanza = $pren->getInfoStanza($conn);
- //    $config = $pren->getInfoConfigurazione($conn);
- //    $pagamento = $pren->getInfoPagamento($conn);
- //
- //
- //    echo "<b>Prenotazione: $i  </b><br>".
- //    " - Date: " . $pren->getCreatedAt() . "<br>" .
- //    " - Stanza: " . $stanza->getId() . "; " .
- //    "Number: " . $stanza->getRoomNumber() . "; " .
- //    "Floor: " . $stanza->getFloor() . "; " .
- //    "Beds: " . $stanza->getBeds() . "<br>" .
- //
- //    " - Configurazione: " . $config->getId() . "; " .
- //    "Number: " . $config->getId() . "; " .
- //     $config->getTitle() . ": ' " .
- //     $config->getDescription() . "'<br>" .
- //
- //     " - Pagamento: " . $pagamento->getId() . "; " .
- //     "Status: " . $pagamento->getStatus() . "; " .
- //     "Price: " . $pagamento->getPrice() . "<br>" .
- //     " - Ospiti: <br>" ;
- //
- //     $ospiti = $pren->getOspitiByPrenotazione($conn);
- //
- //
- //    foreach ($ospiti as $osp) {
- //
- //      echo "&nbsp&nbsp&nbsp" . $osp->getName() . " " . $osp->getLastname() . "<br>";
- //    }
- //
- //    echo "<br>";
- //
- //    $i++;
- //
- //  }
- //
- // echo "<br><hr><br>";
+  foreach ($prenotazioni as $pren) {
+
+    $stanza = $pren->getInfoStanza($conn);
+    $config = $pren->getInfoConfigurazione($conn);
+    $pagamento = $pren->getInfoPagamento($conn);
+
+
+    echo "<b>Prenotazione: $i  </b><br>".
+    " - Date: " . $pren->getCreatedAt() . "<br>" .
+    " - Stanza: " . $stanza->getId() . "; " .
+    "Number: " . $stanza->getRoomNumber() . "; " .
+    "Floor: " . $stanza->getFloor() . "; " .
+    "Beds: " . $stanza->getBeds() . "<br>" .
+
+    " - Configurazione: " . $config->getId() . "; " .
+    "Number: " . $config->getId() . "; " .
+     $config->getTitle() . ": ' " .
+     $config->getDescription() . "'<br>" .
+
+     " - Pagamento: " . $pagamento->getId() . "; " .
+     "Status: " . $pagamento->getStatus() . "; " .
+     "Price: " . $pagamento->getPrice() . "<br>" .
+     " - Ospiti: <br>" ;
+
+     $ospiti = $pren->getOspitiByPrenotazione($conn);
+
+
+    foreach ($ospiti as $osp) {
+
+      echo "&nbsp&nbsp&nbsp" . $osp->getName() . " " . $osp->getLastname() . "<br>";
+    }
+
+    echo "<br>";
+
+    $i++;
+
+  }
+
+ echo "<br><hr><br>";
+*/
+
 
   $jsReady=[];
 
@@ -700,12 +685,12 @@
     $stanza = $pren->getInfoStanza($conn);
     $config = $pren->getInfoConfigurazione($conn);
     $pagamento = $pren->getInfoPagamento($conn);
-    $ospiti = $pren->getOspitiByPrenotazione($conn);
+    $ospiti = $pren->getOspiti($conn);
 
-    $ospit = [];
+    $groupOsp = [];
     foreach ($ospiti as $osp) {
 
-      $ospit["ospiti"][] = $osp->getJsonData();
+      $groupOsp["ospiti"][] = $osp->getJsonData();
     }
     // var_dump($ospit); echo "<br>";
 
@@ -714,19 +699,15 @@
                               $stanza->getJsonData(),
                               $config->getJsonData(),
                               $pagamento->getJsonData(),
-                              $ospit
+                              $groupOsp
     );
 
   }
 
-  echo json_encode($jsReady);
-
-
-
-
-
-
   // Chiusura connessione Database---------------------------
 
   $conn->close();
+
+
+  echo json_encode($jsReady);
  ?>

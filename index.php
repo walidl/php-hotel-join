@@ -25,27 +25,34 @@
           <div class="identity">
             <span>{{id}}</span> <span>{{date}}</span>
           </div>
-          <ul>
-            <li>Stanza numero: {{room_number}}
+          <div>
+            <h2>Stanza {{room_number}}</h2>
+            <ul>
+              <li><span class="tit">piano:</span> <span>{{floor}}</span></li>
+              <li><span class="tit">letti:</span> <span>{{beds}}</span> </li>
+            </ul>
+            <div>
+              <h2>Configurazione: <i class="fas fa-info-circle"></i></h2>
               <ul>
-                <li>piano: {{floor}}</li>
-                <li>letti : {{beds}} </li>
-                <li>configurazione :{{conf_title}}</li>
+                <li>{{conf_title}}</li>
               </ul>
-            </li>
-            <li>Pagameto:
-              <ul>
-                <li>prezzo : ${{pay_price}} </li>
-                <li>Status : {{pay_status}} </li>
-              </ul>
-            </li>
-            <li>Ospiti:
-              <ul class="ospiti">
+            </div>
 
-              </ul>
-            </li>
-          </ul>
+          </div>
+          <div>
+            <h2>Pagameto</h2>
+            <ul>
+              <li><span class="tit">prezzo:</span> <span>${{pay_price}}</span> </li>
+              <li><span class="tit">Status:</span> <span>{{pay_status}}</span> </li>
+            </ul>
+          </div>
+          <div>
+            <h2>Ospiti</h2>
+            <ul class="ospiti">
 
+            </ul>
+
+          </div>
         </div>
 
       </script>
@@ -57,17 +64,9 @@
     <title></title>
   </head>
   <body>
-
-
     <h1>Prenotazioni Maggio 2018</h1>
     <div class="container">
-
-
-
     </div>
-
-
-
 
   </body>
 </html>
